@@ -33,7 +33,7 @@ function PostsComponent() {
   if (error) return <>error..</>
 
   return (
-    <div className="p-2 flex gap-2 flex-col">
+    <div className="flex flex-col gap-2 p-2">
       <div>server-rendered email: {email}</div>
       <div>client-rendered but no auth required (pops in): {count}</div>
       <div>
@@ -44,7 +44,7 @@ function PostsComponent() {
       </div>
       <ul className="list-disc pl-4">
         {[...posts, { id: 'i-do-not-exist', title: 'Non-existent Post' }].map(
-          (post) => {
+          post => {
             return (
               <li key={post.id} className="whitespace-nowrap">
                 <Link
@@ -59,7 +59,7 @@ function PostsComponent() {
                 </Link>
               </li>
             )
-          },
+          }
         )}
       </ul>
       <hr />

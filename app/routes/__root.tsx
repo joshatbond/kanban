@@ -1,11 +1,4 @@
 import {
-  Link,
-  Outlet,
-  ScrollRestoration,
-  createRootRouteWithContext,
-  useRouteContext,
-} from '@tanstack/react-router'
-import {
   ClerkProvider,
   SignInButton,
   SignedIn,
@@ -13,19 +6,25 @@ import {
   UserButton,
   useAuth,
 } from '@clerk/tanstack-start'
+import { getAuth } from '@clerk/tanstack-start/server'
+import { ConvexQueryClient } from '@convex-dev/react-query'
+import { QueryClient } from '@tanstack/react-query'
+import {
+  Link,
+  Outlet,
+  ScrollRestoration,
+  createRootRouteWithContext,
+  useRouteContext,
+} from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/router-devtools'
 import { Meta, Scripts, createServerFn } from '@tanstack/start'
-import { QueryClient } from '@tanstack/react-query'
+import { ConvexReactClient } from 'convex/react'
+import { ConvexProviderWithClerk } from 'convex/react-clerk'
 import * as React from 'react'
-import { getAuth } from '@clerk/tanstack-start/server'
 import { getWebRequest } from 'vinxi/http'
 import { DefaultCatchBoundary } from '~/components/DefaultCatchBoundary.js'
 import { NotFound } from '~/components/NotFound.js'
 import appCss from '~/styles/app.css?url'
-import { ConvexQueryClient } from '@convex-dev/react-query'
-
-import { ConvexReactClient } from 'convex/react'
-import { ConvexProviderWithClerk } from 'convex/react-clerk'
 
 const fetchClerkAuth = createServerFn({ method: 'GET' }).handler(async () => {
   const auth = await getAuth(getWebRequest())
@@ -75,7 +74,7 @@ export const Route = createRootRouteWithContext<{
       { rel: 'icon', href: '/favicon.ico' },
     ],
   }),
-  beforeLoad: async (ctx) => {
+  beforeLoad: async ctx => {
     const auth = await fetchClerkAuth()
     const { userId, token } = auth
 
@@ -90,7 +89,7 @@ export const Route = createRootRouteWithContext<{
       token,
     }
   },
-  errorComponent: (props) => {
+  errorComponent: props => {
     return (
       <RootDocument>
         <DefaultCatchBoundary {...props} />
@@ -121,7 +120,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <Meta />
       </head>
       <body>
-        <div className="p-2 flex gap-2 text-lg">
+        <div className="flex gap-2 p-2 text-lg">
           <Link
             to="/"
             activeProps={{
