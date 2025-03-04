@@ -10,14 +10,15 @@ import { getAuth } from '@clerk/tanstack-start/server'
 import { ConvexQueryClient } from '@convex-dev/react-query'
 import { QueryClient } from '@tanstack/react-query'
 import {
+  HeadContent,
   Link,
   Outlet,
-  ScrollRestoration,
+  Scripts,
   createRootRouteWithContext,
   useRouteContext,
 } from '@tanstack/react-router'
+import { createServerFn } from '@tanstack/react-start'
 import { TanStackRouterDevtools } from '@tanstack/router-devtools'
-import { Meta, Scripts, createServerFn } from '@tanstack/start'
 import { ConvexReactClient } from 'convex/react'
 import { ConvexProviderWithClerk } from 'convex/react-clerk'
 import * as React from 'react'
@@ -117,7 +118,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
   return (
     <html>
       <head>
-        <Meta />
+        <HeadContent />
       </head>
       <body>
         <div className="flex gap-2 p-2 text-lg">
@@ -149,7 +150,6 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         </div>
         <hr />
         {children}
-        <ScrollRestoration />
         <TanStackRouterDevtools position="bottom-right" />
         <Scripts />
       </body>
