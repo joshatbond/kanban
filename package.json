@@ -8,7 +8,8 @@
   "scripts": {
     "dev": "concurrently -r npm:dev:web npm:dev:db",
     "dev:web": "vinxi dev",
-    "dev:db": "npx convex dev",
+    "dev:db": "convex dev",
+    "db:seed": "convex dev --run board:seed",
     "build": "vinxi build 2>/dev/null & true 'Ignore vinxi build warnings until tanstack start can run without them (need updated guide)'",
     "start": "vinxi start",
     "lint": "prettier --check '**/*' --ignore-unknown && eslint --ext .ts,.tsx ./app",
@@ -25,7 +26,9 @@
     "convex": "1.17.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-hot-toast": "^2.5.2",
     "redaxios": "^0.5.1",
+    "tailwind-merge": "^3.0.2",
     "vinxi": "0.5.1"
   },
   "devDependencies": {

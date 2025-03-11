@@ -16,16 +16,19 @@ import {
   Scripts,
   createRootRouteWithContext,
   useRouteContext,
+  useRouterState,
 } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/react-start'
 import { TanStackRouterDevtools } from '@tanstack/router-devtools'
 import { ConvexReactClient } from 'convex/react'
 import { ConvexProviderWithClerk } from 'convex/react-clerk'
 import * as React from 'react'
+import { Toaster } from 'react-hot-toast'
 import { getWebRequest } from 'vinxi/http'
-import { DefaultCatchBoundary } from '~/components/DefaultCatchBoundary.js'
-import { NotFound } from '~/components/NotFound.js'
-import appCss from '~/styles/app.css?url'
+import { DefaultCatchBoundary } from '~/app/components/DefaultCatchBoundary.js'
+import { Loader } from '~/app/components/Loader'
+import { NotFound } from '~/app/components/NotFound.js'
+import appCss from '~/app/styles/app.css?url'
 
 const fetchClerkAuth = createServerFn({ method: 'GET' }).handler(async () => {
   const auth = await getAuth(getWebRequest())
@@ -114,45 +117,68 @@ function RootComponent() {
   )
 }
 
-function RootDocument({ children }: { children: React.ReactNode }) {
+function RootDocument(props: React.PropsWithChildren) {
   return (
     <html>
       <head>
         <HeadContent />
       </head>
+
       <body>
-        <div className="flex gap-2 p-2 text-lg">
-          <Link
-            to="/"
-            activeProps={{
-              className: 'font-bold',
-            }}
-            activeOptions={{ exact: true }}
-          >
-            Home
-          </Link>{' '}
-          <Link
-            to="/posts"
-            activeProps={{
-              className: 'font-bold',
-            }}
-          >
-            Posts
-          </Link>
-          <div className="ml-auto">
-            <SignedIn>
-              <UserButton />
-            </SignedIn>
-            <SignedOut>
-              <SignInButton mode="modal" />
-            </SignedOut>
+        <div className="flex h-screen min-h-0 flex-col">
+          <div className="box-border flex items-center justify-between border-b border-slate-800 bg-slate-900 px-8 py-4">
+            <div className="flex items-end gap-4">
+              <Link to="/" className="block leading-tight">
+                <span className="text-2xl font-black text-white">Trellaux</span>
+              </Link>
+
+              <Link
+                to="/posts"
+                className="text-neutral-400 hover:text-neutral-100"
+                activeProps={{
+                  className: 'font-bold text-white',
+                }}
+              >
+                Posts
+              </Link>
+
+              <LoadingIndicator />
+            </div>
+
+            <div>
+              <SignedIn>
+                <UserButton />
+              </SignedIn>
+              <SignedOut>
+                <SignInButton mode="modal" />
+              </SignedOut>
+            </div>
+          </div>
+
+          <div className="flex h-full min-h-0 flex-grow flex-col">
+            {props.children}
+
+            <Toaster />
           </div>
         </div>
-        <hr />
-        {children}
+
         <TanStackRouterDevtools position="bottom-right" />
         <Scripts />
       </body>
     </html>
+  )
+}
+
+function LoadingIndicator() {
+  const isLoading = useRouterState({ select: s => s.isLoading })
+
+  return (
+    <div
+      className={`h-12 transition-all duration-300 ${
+        isLoading ? `opacity-100 delay-300` : `opacity-0 delay-0`
+      }`}
+    >
+      <Loader />
+    </div>
   )
 }

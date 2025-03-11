@@ -1,7 +1,7 @@
 import { convexQuery } from '@convex-dev/react-query'
 import { useQuery, useSuspenseQuery } from '@tanstack/react-query'
 import { Link, Outlet, createFileRoute } from '@tanstack/react-router'
-import { api } from 'convex/_generated/api'
+import { api } from '~/server/convex/_generated/api'
 
 export const Route = createFileRoute('/convexposts')({
   loader: async ({ context }) => {

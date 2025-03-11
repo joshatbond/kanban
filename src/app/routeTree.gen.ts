@@ -18,6 +18,7 @@ import { Route as AuthedPostsImport } from './routes/_authed/posts'
 import { Route as AuthedPostsIndexImport } from './routes/_authed/posts.index'
 import { Route as AuthedProfileSplatImport } from './routes/_authed/profile.$'
 import { Route as AuthedPostsPostIdImport } from './routes/_authed/posts.$postId'
+import { Route as AuthedBoardsBoardIdImport } from './routes/_authed/boards.$boardId'
 
 // Create/Update Routes
 
@@ -62,6 +63,12 @@ const AuthedPostsPostIdRoute = AuthedPostsPostIdImport.update({
   getParentRoute: () => AuthedPostsRoute,
 } as any)
 
+const AuthedBoardsBoardIdRoute = AuthedBoardsBoardIdImport.update({
+  id: '/boards/$boardId',
+  path: '/boards/$boardId',
+  getParentRoute: () => AuthedRoute,
+} as any)
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -92,6 +99,13 @@ declare module '@tanstack/react-router' {
       path: '/posts'
       fullPath: '/posts'
       preLoaderRoute: typeof AuthedPostsImport
+      parentRoute: typeof AuthedImport
+    }
+    '/_authed/boards/$boardId': {
+      id: '/_authed/boards/$boardId'
+      path: '/boards/$boardId'
+      fullPath: '/boards/$boardId'
+      preLoaderRoute: typeof AuthedBoardsBoardIdImport
       parentRoute: typeof AuthedImport
     }
     '/_authed/posts/$postId': {
@@ -136,11 +150,13 @@ const AuthedPostsRouteWithChildren = AuthedPostsRoute._addFileChildren(
 
 interface AuthedRouteChildren {
   AuthedPostsRoute: typeof AuthedPostsRouteWithChildren
+  AuthedBoardsBoardIdRoute: typeof AuthedBoardsBoardIdRoute
   AuthedProfileSplatRoute: typeof AuthedProfileSplatRoute
 }
 
 const AuthedRouteChildren: AuthedRouteChildren = {
   AuthedPostsRoute: AuthedPostsRouteWithChildren,
+  AuthedBoardsBoardIdRoute: AuthedBoardsBoardIdRoute,
   AuthedProfileSplatRoute: AuthedProfileSplatRoute,
 }
 
@@ -152,6 +168,7 @@ export interface FileRoutesByFullPath {
   '': typeof AuthedRouteWithChildren
   '/convexposts': typeof ConvexpostsRoute
   '/posts': typeof AuthedPostsRouteWithChildren
+  '/boards/$boardId': typeof AuthedBoardsBoardIdRoute
   '/posts/$postId': typeof AuthedPostsPostIdRoute
   '/profile/$': typeof AuthedProfileSplatRoute
   '/posts/': typeof AuthedPostsIndexRoute
@@ -161,6 +178,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '': typeof AuthedRouteWithChildren
   '/convexposts': typeof ConvexpostsRoute
+  '/boards/$boardId': typeof AuthedBoardsBoardIdRoute
   '/posts/$postId': typeof AuthedPostsPostIdRoute
   '/profile/$': typeof AuthedProfileSplatRoute
   '/posts': typeof AuthedPostsIndexRoute
@@ -172,6 +190,7 @@ export interface FileRoutesById {
   '/_authed': typeof AuthedRouteWithChildren
   '/convexposts': typeof ConvexpostsRoute
   '/_authed/posts': typeof AuthedPostsRouteWithChildren
+  '/_authed/boards/$boardId': typeof AuthedBoardsBoardIdRoute
   '/_authed/posts/$postId': typeof AuthedPostsPostIdRoute
   '/_authed/profile/$': typeof AuthedProfileSplatRoute
   '/_authed/posts/': typeof AuthedPostsIndexRoute
@@ -184,17 +203,26 @@ export interface FileRouteTypes {
     | ''
     | '/convexposts'
     | '/posts'
+    | '/boards/$boardId'
     | '/posts/$postId'
     | '/profile/$'
     | '/posts/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '' | '/convexposts' | '/posts/$postId' | '/profile/$' | '/posts'
+  to:
+    | '/'
+    | ''
+    | '/convexposts'
+    | '/boards/$boardId'
+    | '/posts/$postId'
+    | '/profile/$'
+    | '/posts'
   id:
     | '__root__'
     | '/'
     | '/_authed'
     | '/convexposts'
     | '/_authed/posts'
+    | '/_authed/boards/$boardId'
     | '/_authed/posts/$postId'
     | '/_authed/profile/$'
     | '/_authed/posts/'
@@ -235,6 +263,7 @@ export const routeTree = rootRoute
       "filePath": "_authed.tsx",
       "children": [
         "/_authed/posts",
+        "/_authed/boards/$boardId",
         "/_authed/profile/$"
       ]
     },
@@ -248,6 +277,10 @@ export const routeTree = rootRoute
         "/_authed/posts/$postId",
         "/_authed/posts/"
       ]
+    },
+    "/_authed/boards/$boardId": {
+      "filePath": "_authed/boards.$boardId.tsx",
+      "parent": "/_authed"
     },
     "/_authed/posts/$postId": {
       "filePath": "_authed/posts.$postId.tsx",
