@@ -1,18 +1,12 @@
 import { useRef } from 'react'
 import invariant from 'tiny-invariant'
+import { Button } from '~/components/ui/button'
 import { itemSchema } from '~/server/db/schema'
 
-import { useCreateItemMutation } from '../queries'
-import { ItemMutationFields } from '../types'
-import { CancelButton } from './CancelButton'
-import { SaveButton } from './SaveButton'
+import { useCreateItemMutation } from '../../queries'
+import { ItemMutationFields } from '../../types'
 
-export function NewCard({
-  columnId,
-  boardId,
-  nextOrder,
-  onComplete,
-}: {
+export function NewCard(props: {
   columnId: string
   boardId: string
   nextOrder: number
@@ -40,20 +34,20 @@ export function NewCard({
       }}
       onBlur={event => {
         if (!event.currentTarget.contains(event.relatedTarget)) {
-          onComplete()
+          props.onComplete()
         }
       }}
     >
-      <input type="hidden" name="boardId" value={boardId} />
+      <input type="hidden" name="boardId" value={props.boardId} />
       <input
         type="hidden"
         name={ItemMutationFields.columnId.name}
-        value={columnId}
+        value={props.columnId}
       />
       <input
         type="hidden"
         name={ItemMutationFields.order.name}
-        value={nextOrder}
+        value={props.nextOrder}
       />
 
       <textarea
@@ -70,7 +64,7 @@ export function NewCard({
             buttonRef.current.click()
           }
           if (event.key === 'Escape') {
-            onComplete()
+            props.onComplete()
           }
         }}
         onChange={event => {
@@ -79,8 +73,11 @@ export function NewCard({
         }}
       />
       <div className="flex justify-between">
-        <SaveButton ref={buttonRef}>Save Card</SaveButton>
-        <CancelButton onClick={onComplete}>Cancel</CancelButton>
+        <Button ref={buttonRef}>Save Card</Button>
+
+        <Button onClick={props.onComplete} variant="outline">
+          Cancel
+        </Button>
       </div>
     </form>
   )

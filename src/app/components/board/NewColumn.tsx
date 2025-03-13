@@ -1,10 +1,9 @@
 import { useRef, useState } from 'react'
 import invariant from 'tiny-invariant'
-import { CancelButton } from '~/app/components/CancelButton'
-import { SaveButton } from '~/app/components/SaveButton'
 
-import { Icon } from '../icons/icons'
 import { useCreateColumnMutation } from '../queries'
+import { Button } from './ui/button'
+import { Icon } from './ui/icon'
 
 export function NewColumn({
   boardId,
@@ -51,20 +50,22 @@ export function NewColumn({
         autoComplete="off"
         className="w-full rounded-lg border border-slate-400 px-2 py-1 font-medium text-black"
       />
+
       <div className="flex justify-between">
-        <SaveButton>Save Column</SaveButton>
-        <CancelButton onClick={() => setEditing(false)}>Cancel</CancelButton>
+        <Button>Save Column</Button>
+
+        <Button variant="outline" onClick={() => setEditing(false)}>
+          Cancel
+        </Button>
       </div>
     </form>
   ) : (
-    <button
-      onClick={() => {
-        setEditing(true)
-      }}
+    <Button
+      onClick={() => setEditing(true)}
       aria-label="Add new column"
-      className="bg-opacity-10 hover:bg-opacity-5 ml-2 flex h-16 w-16 flex-shrink-0 justify-center rounded-xl bg-black hover:bg-white"
+      className="bg-opacity-10 hover:bg-opacity-5 ml-2 flex size-16 flex-shrink-0 justify-center rounded-xl bg-black hover:bg-white"
     >
       <Icon name="plus" size="xl" />
-    </button>
+    </Button>
   )
 }

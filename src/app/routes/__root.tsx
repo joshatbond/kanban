@@ -22,12 +22,11 @@ import { createServerFn } from '@tanstack/react-start'
 import { TanStackRouterDevtools } from '@tanstack/router-devtools'
 import { ConvexReactClient } from 'convex/react'
 import { ConvexProviderWithClerk } from 'convex/react-clerk'
-import * as React from 'react'
 import { Toaster } from 'react-hot-toast'
 import { getWebRequest } from 'vinxi/http'
-import { DefaultCatchBoundary } from '~/app/components/DefaultCatchBoundary.js'
-import { Loader } from '~/app/components/Loader'
-import { NotFound } from '~/app/components/NotFound.js'
+import { DefaultCatchBoundary } from '~/app/components/structural/DefaultCatchBoundary.js'
+import { NotFound } from '~/app/components/structural/NotFound.js'
+import { Loader } from '~/app/components/ui/Loader'
 import appCss from '~/app/styles/app.css?url'
 
 const fetchClerkAuth = createServerFn({ method: 'GET' }).handler(async () => {
@@ -45,6 +44,21 @@ export const Route = createRootRouteWithContext<{
   convexClient: ConvexReactClient
   convexQueryClient: ConvexQueryClient
 }>()({
+  beforeLoad: async ctx => {
+    const auth = await fetchClerkAuth()
+    const { userId, token } = auth
+
+    // During SSR only (the only time serverHttpClient exists),
+    // set the Clerk auth token to make HTTP queries with.
+    if (token) {
+      ctx.context.convexQueryClient.serverHttpClient?.setAuth(token)
+    }
+
+    return {
+      userId,
+      token,
+    }
+  },
   head: () => ({
     meta: [
       {
@@ -78,21 +92,6 @@ export const Route = createRootRouteWithContext<{
       { rel: 'icon', href: '/favicon.ico' },
     ],
   }),
-  beforeLoad: async ctx => {
-    const auth = await fetchClerkAuth()
-    const { userId, token } = auth
-
-    // During SSR only (the only time serverHttpClient exists),
-    // set the Clerk auth token to make HTTP queries with.
-    if (token) {
-      ctx.context.convexQueryClient.serverHttpClient?.setAuth(token)
-    }
-
-    return {
-      userId,
-      token,
-    }
-  },
   errorComponent: props => {
     return (
       <RootDocument>

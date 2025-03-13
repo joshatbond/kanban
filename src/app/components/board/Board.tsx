@@ -3,11 +3,11 @@ import { useSuspenseQuery } from '@tanstack/react-query'
 import { Link } from '@tanstack/react-router'
 import { useCallback, useMemo, useRef } from 'react'
 import invariant from 'tiny-invariant'
-import { EditableText } from '~/app/components/EditableText'
+import { EditableText } from '~/app/components/ui/EditableText'
 import { api } from '~/server/convex/_generated/api'
 import type { Column } from '~/server/convex/schema.js'
 
-import { useUpdateBoardMutation } from '../queries'
+import { useUpdateBoardMutation } from '../../queries'
 import { Column as ColumnComponent } from './Column'
 import { NewColumn } from './NewColumn'
 
@@ -20,7 +20,7 @@ export function Board({ boardId }: { boardId: string }) {
 
   // scroll right when new columns are added
   const scrollContainerRef = useRef<HTMLDivElement>(null)
-  const columnRef = useCallback((_node: HTMLElement | null) => {
+  const columnRef = useCallback(() => {
     if (scrollContainerRef.current && newColumnAddedRef.current) {
       newColumnAddedRef.current = false
       scrollContainerRef.current.scrollLeft =

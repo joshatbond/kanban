@@ -1,7 +1,7 @@
 import { convexQuery } from '@convex-dev/react-query'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { Link, createFileRoute } from '@tanstack/react-router'
-import { Loader } from '~/app/components/Loader'
+import { Loader } from '~/app/components/ui/Loader'
 import { api } from '~/server/convex/_generated/api'
 
 export const Route = createFileRoute('/')({

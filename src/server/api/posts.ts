@@ -17,10 +17,8 @@ export const fetchPost = createServerFn({ method: 'GET' })
       .then(r => r.data)
       .catch(err => {
         console.error(err)
-        if (err.status === 404) {
-          throw notFound()
-        }
-        throw err
+
+        throw err.status === 404 ? notFound() : err
       })
 
     return post
