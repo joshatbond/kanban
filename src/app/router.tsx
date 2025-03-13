@@ -3,17 +3,14 @@ import { QueryClient } from '@tanstack/react-query'
 import { createRouter as createTanStackRouter } from '@tanstack/react-router'
 import { routerWithQueryClient } from '@tanstack/react-router-with-query'
 import { ConvexProvider, ConvexReactClient } from 'convex/react'
+import { env } from '~/app/env'
 import { DefaultCatchBoundary } from '~/components/structural/DefaultCatchBoundary'
 import { NotFound } from '~/components/structural/NotFound'
 
 import { routeTree } from './routeTree.gen'
 
 export function createRouter() {
-  const CONVEX_URL = (import.meta as any).env.VITE_CONVEX_URL!
-  if (!CONVEX_URL) {
-    throw new Error('missing VITE_CONVEX_URL envar')
-  }
-  const convex = new ConvexReactClient(CONVEX_URL, {
+  const convex = new ConvexReactClient(env.VITE_CONVEX_URL, {
     unsavedChangesWarning: false,
   })
   const convexQueryClient = new ConvexQueryClient(convex)
