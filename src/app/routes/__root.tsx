@@ -24,10 +24,10 @@ import { ConvexReactClient } from 'convex/react'
 import { ConvexProviderWithClerk } from 'convex/react-clerk'
 import { Toaster } from 'react-hot-toast'
 import { getWebRequest } from 'vinxi/http'
+import appCss from '~/app/app.css?url'
 import { DefaultCatchBoundary } from '~/app/components/structural/DefaultCatchBoundary.js'
 import { NotFound } from '~/app/components/structural/NotFound.js'
 import { Loader } from '~/app/components/ui/Loader'
-import appCss from '~/app/styles/app.css?url'
 
 const fetchClerkAuth = createServerFn({ method: 'GET' }).handler(async () => {
   const auth = await getAuth(getWebRequest())
