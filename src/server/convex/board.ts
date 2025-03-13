@@ -41,10 +41,11 @@ export const clear = internalMutation(async ctx => {
   })
 })
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function withoutSystemFields<T extends { _creationTime: number; _id: Id<any> }>(
-  doc: T
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  { _id, _creationTime, ...rest }: T
 ) {
-  const { _id, _creationTime, ...rest } = doc
   return rest
 }
 

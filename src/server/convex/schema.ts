@@ -57,6 +57,7 @@ export const deleteItemSchema = v.object({
   id: item.fields.id,
   boardId: item.fields.boardId,
 })
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const { order, id, ...rest } = column.fields
 export const newColumnsSchema = v.object(rest)
 export const deleteColumnSchema = v.object({

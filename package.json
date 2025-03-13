@@ -12,7 +12,7 @@
     "db:seed": "convex dev --run board:seed",
     "build": "vinxi build 2>/dev/null & true 'Ignore vinxi build warnings until tanstack start can run without them (need updated guide)'",
     "start": "vinxi start",
-    "lint": "prettier --check '**/*' --ignore-unknown && eslint --ext .ts,.tsx ./app",
+    "lint": "prettier --check '**/*' --ignore-unknown && eslint --ext .ts,.tsx ./src",
     "format": "prettier --write '**/*' --ignore-unknown"
   },
   "dependencies": {
