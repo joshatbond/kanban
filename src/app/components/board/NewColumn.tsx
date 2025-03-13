@@ -1,9 +1,8 @@
 import { useRef, useState } from 'react'
 import invariant from 'tiny-invariant'
-
-import { useCreateColumnMutation } from '../queries'
-import { Button } from './ui/button'
-import { Icon } from './ui/icon'
+import { useCreateColumnMutation } from '~/app/queries'
+import { Button } from '~/components/ui/button'
+import { Icon } from '~/components/ui/icon'
 
 export function NewColumn({
   boardId,

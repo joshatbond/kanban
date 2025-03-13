@@ -1,8 +1,7 @@
 import { type VariantProps, cva } from 'class-variance-authority'
 import { type ComponentProps } from 'react'
-
-import { cn } from '../../lib/cn'
-import iconsHref from './icons.svg?url'
+import iconsHref from '~/app/assets/icons.svg?url'
+import { cn } from '~/lib/cn'
 
 export const iconVariants = cva('inline self-center', {
   variants: {
